@@ -7,6 +7,8 @@
   </head>
   <body>
   <button onclick="auth();">GET CONTACTS FEED</button>
+  <table>
+  </table>
     <script type="text/javascript">
 	  function auth() {
 	    var config = {
@@ -24,8 +26,18 @@
 		    url: "https://www.google.com/m8/feeds/contacts/default/full?access_token=" + token.access_token + "&alt=json",
 		    dataType: "jsonp",
 		    success:function(data) {
-                              // display all your data in console
-		              console.log(JSON.stringify(data));
+                        var str = "<caption>Your first 50 contact Names and Emails</caption><tr><th>Name</th><th>Email</th></tr>"
+                        var contacts = data.feed.entry;
+                        var len = 50;
+                        if(contacts.length<50)
+                        	len = contacts.length;
+                        for(var i=0;i<len;i++){
+                        	str += "<tr><td>";
+                        	str += contacts[i].title.$t + "</td><td>";
+                        	str += contacts[i].gd$email[0].address + "</td></tr>";
+                        }
+                        str += "</table>";
+                        $('table').html(str);
 		    }
 		});
 	}	
