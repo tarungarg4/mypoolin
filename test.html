@@ -15,12 +15,29 @@
         console.log("Name: " + profile.getName());
         console.log("Image URL: " + profile.getImageUrl());
         console.log("Email: " + profile.getEmail());
-        console.log("Email: " + profile.getContacts());
+        var config = {
+	      'client_id': '729540263191-n4b25k54eijsfgp0a2b91kq86ldvf9ob.apps.googleusercontent.com',
+	      'scope': 'https://www.google.com/m8/feeds'
+	    };
+	    gapi.auth.authorize(config, function() {
+	      fetch(gapi.auth.getToken());  
+	     
+	    });
 
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
       };
-    </script>
+	
+	  function fetch(token) {
+	    $.ajax({
+		    url: "https://www.google.com/m8/feeds/contacts/default/full?access_token=" + token.access_token + "&alt=json",
+		    dataType: "jsonp",
+		    success:function(data) {
+		              console.log(JSON.stringify(data));
+		    }
+		});
+	}	
+</script>
   </body>
 </html>
